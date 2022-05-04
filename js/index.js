@@ -1,31 +1,24 @@
-const { readFile, writeFile } = require("fs");
+const http = require('http');
 const path = require("path");
 
 const encoding = "utf8";
 const firstFilePath = path.resolve(__dirname, "content", "first.txt");
 const secondFilePath = path.resolve(__dirname, "content", "second.txt");
-const resultAsync = path.resolve(__dirname, "content", "result-async.txt");
 
-readFile(firstFilePath, encoding, (err, result) => {
-  if (err) {
-    console.log(err);
-    return;
+const server = http.createServer((req, res) => {
+  if(req.url === '/') {
+    res.end('Welcome to our home page');
   }
-  const first = result;
+  if(req.url === '/about') {
+    res.end('Here is your short history');
+  }
+  res.end(`
+    <h1>Oops!</h1>
+    <p>We can't seem to finde the page you are looking for</p>
+    <a href="/">Back home</a>
+  `);
+});
 
-  readFile(secondFilePath, encoding, (err, result) => {
-    if (err) {
-      console.log(err);
-      return;
-    }
-    const second = result;
-
-    writeFile(resultAsync, `Here is the result : ${first}, ${second}`, (err, result) => {
-      if(err) {
-        console.log(err);
-        return
-      }
-      console.log(result)
-    });
-  });
+server.listen(5000, () => {
+  console.log('Server run in 5000')
 });
