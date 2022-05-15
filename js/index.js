@@ -1,14 +1,14 @@
 const warningText = document.querySelector("#warningText"),
   inp = document.querySelector("#inp");
 
-const setErrorText = () => {
-  warningText.innerHTML = "Enter lowercase alphabets only";
+const setErrorText = (e) => {
+  let reg = /[0-9]/g;
+  if(reg.test(e.target.value)) {
+    warningText.innerHTML = "Enter lowercase alphabets only";
+  } else {
+    warningText.innerHTML = "";
+  }
+  
 };
 
-const delErrorText = () => {
-  setTimeout(() => {
-    warningText.innerHTML = "";
-  }, 2000);
-};
-inp.addEventListener("animationstart", () => setErrorText());
-inp.addEventListener("animationend", () => delErrorText());
+inp.addEventListener("input", (e) => setErrorText(e));
